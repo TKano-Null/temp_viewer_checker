@@ -150,22 +150,22 @@ def postData(data):
         p = data[1]
         h = data[2]
 
-        dateutc = datetime.now().isoformat(timespec='seconds')
+        date = datetime.now().isoformat(timespec='seconds')
         env = os.environ.get("ENV_LOCATION")
         load_dotenv(env)
         url = os.environ.get("DATABASE_URL")
+        uid = os.environ.get("FIREBASE_UID")
         firebase = os.environ.get("FIREBASE_LOCATION")
-
         cred = credentials.Certificate(firebase)
         firebase_admin.initialize_app(cred, {
                 'databaseURL': url,
                 'databaseAuthVariableOverride': {
-                'uid': 'my-service-worker'
+                'uid': uid
                 }
         })
-        users_ref = db.reference('/tempdata')
+        users_ref = db.reference('/users/'+ uid +'/tempdata')
         users_ref.push({
-                dateutc:{
+                date:{
                 'temp': t,
                 'humi': h,
                 'pres': p
