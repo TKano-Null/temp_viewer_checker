@@ -150,7 +150,7 @@ def postData(data):
         p = data[1]
         h = data[2]
 
-        date = datetime.now().isoformat(timespec='seconds')
+        date = time.time()
         env = os.environ.get("ENV_LOCATION")
         load_dotenv(env)
         url = os.environ.get("DATABASE_URL")
@@ -165,11 +165,10 @@ def postData(data):
         })
         users_ref = db.reference('/users/'+ uid +'/tempdata')
         users_ref.push({
-                date:{
+                'date': date,
                 'temp': t,
                 'humi': h,
                 'pres': p
-                }
         })
 
 
